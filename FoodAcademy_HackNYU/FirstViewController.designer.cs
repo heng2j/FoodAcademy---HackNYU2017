@@ -15,13 +15,22 @@ namespace FoodAcademy_HackNYU
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIImageView takePictureView { get; set; }
+        UIKit.UILabel AnalysisLabel { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIImageView SelectedPictureImageView { get; set; }
 
         void ReleaseDesignerOutlets ()
         {
-            if (takePictureView != null) {
-                takePictureView.Dispose ();
-                takePictureView = null;
+            if (AnalysisLabel != null) {
+                AnalysisLabel.Dispose ();
+                AnalysisLabel = null;
+            }
+
+            if (SelectedPictureImageView != null) {
+                SelectedPictureImageView.Dispose ();
+                SelectedPictureImageView = null;
             }
         }
     }

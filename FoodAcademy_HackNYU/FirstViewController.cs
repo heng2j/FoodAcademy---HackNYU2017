@@ -1,34 +1,17 @@
-﻿using Foundation;
+﻿
 using System;
-using UIKit;
-using Plugin.Media;
-using Plugin.Media.Abstractions;
-
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using Foundation;
+using Plugin.Media;
 
-
-using CoreGraphics;
-
-//using System;
-//using System.Collections.Generic;
-//using System.Collections.ObjectModel;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-
-//using Xamarin.Forms;
-
-//using Plugin.Media;
-//using Plugin.Media.Abstractions;
 
 using Microsoft.ProjectOxford.Vision;
 using Microsoft.ProjectOxford.Vision.Contract;
-using System.ComponentModel;
-using System.Diagnostics;
+using UIKit;
 
-using static System.Diagnostics.Debug;
-using System.Runtime.CompilerServices;
-
+using CoreGraphics;
 
 namespace FoodAcademy_HackNYU
 {
@@ -42,130 +25,37 @@ namespace FoodAcademy_HackNYU
 
 		Food food = new Food();
 
-		//public ObservableCollection<Food> Invoices { get; } = new ObservableCollection<Food>();
-
-		//public string Message { get; set; } = "Hello World!";
 
 
-		//Command addInvoiceCommand = null;
-		//public Command AddInvoiceCommand =>
-		//			addInvoiceCommand ?? (addInvoiceCommand = new Command(async () => await ExecuteAddInvoiceCommandAsync()));
-
-
-		//async Task ExecuteAddInvoiceCommandAsync()
+		//partial void SelectButtonClick(UIButton sender)
 		//{
-		//	double total = 0.0;
-		//	try
-		//	{
-		//		IsBusy = true;
-		//		// 1. Add camera logic.
-		//		await CrossMedia.Current.Initialize();
-
-		//		MediaFile photo;
-		//		if (CrossMedia.Current.IsCameraAvailable)
-		//		{
-		//			photo = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
-		//			{
-		//				Directory = "Receipts",
-		//				Name = "Receipt"
-		//			});
-		//		}
-		//		else
-		//		{
-		//			photo = await CrossMedia.Current.PickPhotoAsync();
-		//		}
-
-		//		if (photo == null)
-		//		{
-		//			PrintStatus("Photo was null :(");
-		//			return;
-		//		}
-
-
-		//		// 2. Add  OCR logic.
-		//		OcrResults text;
-
-		//		var client = new VisionServiceClient("c19d4b8bb6c242ea99a8a998195a24f0");
-
-		//		using (var stream = photo.GetStream())
-		//			text = await client.RecognizeTextAsync(stream);
-
-		//		var numbers = from region in text.Regions
-		//					  from line in region.Lines
-		//					  from word in line.Words
-		//					  where word?.Text?.Contains("$") ?? false
-		//					  select word.Text.Replace("$", string.Empty);
-
-
-		//		double temp = 0.0;
-		//		total = numbers?.Count() > 0 ?
-		//				numbers.Max(x => double.TryParse(x, out temp) ? temp : 0) :
-		//				0;
-
-
-
-		//		PrintStatus($"Found total {total.ToString("C")} " +
-		//			$"and we had {text.Regions.Count()} regions");
-
-
-		//		// 3. Add to data-bound collection.
-		//		Invoices.Add(new Invoice
-		//		{
-		//			Total = total,
-		//			Photo = photo.Path,
-		//			TimeStamp = DateTime.Now
-		//		});
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		await (Application.Current?.MainPage?.DisplayAlert("Error",
-		//			$"Something bad happened: {ex.Message}", "OK") ??
-		//			Task.FromResult(true));
-
-		//		PrintStatus(string.Format("ERROR: {0}", ex.Message));
-
-		//	}
-		//	finally
-		//	{
-		//		IsBusy = false;
-		//	}
-
-		//}
-
-
-		//public void PrintStatus(string helloWorld)
-		//{
-		//	if (helloWorld == null)
-		//		throw new ArgumentNullException(nameof(helloWorld));
-
-		//	WriteLine(helloWorld);
+		//	selectImage();
 		//}
 
 
 
-		//public event PropertyChangedEventHandler PropertyChanged;
-		//void OnPropertyChanged([CallerMemberName]string propertyName = "") =>
-		//	PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		async void selectImage()
+		{
+			var selectedImage = await CrossMedia.Current.PickPhotoAsync();
+			SelectedPictureImageView.Image = new UIImage(NSData.FromStream(selectedImage.GetStream()));
+			await analyseImage(selectedImage.GetStream());
+		}
 
-
-		//bool busy;
-		//public bool IsBusy
-		//{
-		//	get { return busy; }
-		//	set
-		//	{
-		//		if (busy == value)
-		//			return;
-
-		//		busy = value;
-		//		OnPropertyChanged();
-		//		OnPropertyChanged(nameof(Message));
-		//	}
-		//}
-
-
-
-
+		async Task analyseImage(Stream imageStream)
+		{
+			try
+			{
+				VisionServiceClient visionClient = new VisionServiceClient("c19d4b8bb6c242ea99a8a998195a24f0");
+				VisualFeature[] features = { VisualFeature.Tags, VisualFeature.Categories, VisualFeature.Description };
+				var analysisResult = await visionClient.AnalyzeImageAsync(imageStream, features.ToList(), null);
+				AnalysisLabel.Text = string.Empty;
+				analysisResult.Description.Tags.ToList().ForEach(tag => AnalysisLabel.Text = AnalysisLabel.Text + tag + "\n");
+			}
+			catch (Microsoft.ProjectOxford.Vision.ClientException ex)
+			{
+				AnalysisLabel.Text = ex.Error.Message;
+			}
+		}
 
 
 		protected FirstViewController(IntPtr handle) : base(handle)
@@ -179,10 +69,10 @@ namespace FoodAcademy_HackNYU
 			base.ViewWillAppear(animated);
 
 
-			//profile View
+			//SelectedPictureImageView
 			UITapGestureRecognizer tapGesture = new UITapGestureRecognizer(actionSheet);
-			takePictureView.AddGestureRecognizer(tapGesture);
-			//takePictureView.Image = food.image;
+			SelectedPictureImageView.AddGestureRecognizer(tapGesture);
+			//SelectedPictureImageView.Image = food.image;
 		}
 
 		public override void ViewDidLoad()
@@ -192,10 +82,10 @@ namespace FoodAcademy_HackNYU
 
 
 
-	
 
-			takePictureView.Layer.CornerRadius = takePictureView.Frame.Size.Width / 2;
-			takePictureView.ClipsToBounds = true;
+
+			//takePictureView.Layer.CornerRadius = takePictureView.Frame.Size.Width / 2;
+			//takePictureView.ClipsToBounds = true;
 
 		}
 
@@ -207,56 +97,11 @@ namespace FoodAcademy_HackNYU
 			// Release any cached data, images, etc that aren't in use.
 		}
 
-		//photo Function
-		public void addPhoto()
-		{
-
-
-
-
-		var imagePicker = new UIImagePickerController();
-			imagePicker.SourceType = UIImagePickerControllerSourceType.Camera;
-			PresentViewController(imagePicker, true, null);
-			imagePicker.Canceled += async delegate
-			{
-				await imagePicker.DismissViewControllerAsync(true);
-			};
-
-			imagePicker.FinishedPickingMedia += async (object s, UIImagePickerMediaPickedEventArgs e) {
-				//Insert code here for upload to Cognitive Services
-			};
-
-
-
-			//imagePicker.SourceType = UIImagePickerControllerSourceType.PhotoLibrary;
-
-
-
-			//imagePicker.MediaTypes = UIImagePickerController.AvailableMediaTypes(UIImagePickerControllerSourceType.PhotoLibrary);
-
-
-			//imagePicker.FinishedPickingMedia += Handle_FinishedPickingMedia;
-
-		
-
-			//imagePicker.Canceled += Handle_Canceled;
-
-			//Console.WriteLine("Image selected");
-
-			////this.NavigationController.PresentViewController(imagePicker, true, null);
-
-			//NavigationController.PresentModalViewController(imagePicker, true);
-			/// 
-			/// 
-			//var file = await CrossMedia.Current.PickPhotoAsync();
-
-		
-		}
 
 
 		protected void Handle_FinishedPickingMedia(object sender, UIImagePickerMediaPickedEventArgs e)
 		{
-			
+
 
 			// determine what was selected, video or image
 			bool isImage = false;
@@ -307,19 +152,28 @@ namespace FoodAcademy_HackNYU
 			imagePicker.DismissModalViewController(true);
 		}
 
+
+
 		void Handle_Canceled(object sender, EventArgs e)
 		{
-			
+
 			imagePicker.DismissModalViewController(true);
 		}
 
-		public void takePicture()
+		async void takePicture()
 		{
-			takeImagePicker.SourceType = UIImagePickerControllerSourceType.Camera;
-			takeImagePicker.MediaTypes = UIImagePickerController.AvailableMediaTypes(UIImagePickerControllerSourceType.Camera);
-			takeImagePicker.FinishedPickingMedia += Camera_FinishedPickingMedia;
-			takeImagePicker.Canceled += Camera_Canceled;
-			NavigationController.PresentModalViewController(takeImagePicker, true);
+
+			await CrossMedia.Current.Initialize();
+			var selectedImage = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions());
+
+		
+			SelectedPictureImageView.Image = MaxResizeImage(SelectedPictureImageView.Image, 250, 250);
+
+			SelectedPictureImageView.Image = new UIImage(NSData.FromStream(selectedImage.GetStream()));
+
+
+
+			await analyseImage(selectedImage.GetStream());
 
 		}
 
@@ -376,7 +230,7 @@ namespace FoodAcademy_HackNYU
 
 			//Action Sheet
 			UIAlertController actionSheetAlert = UIAlertController.Create("Change Picture", "Select an item from below", UIAlertControllerStyle.ActionSheet);
-			actionSheetAlert.AddAction(UIAlertAction.Create("Add Photo", UIAlertActionStyle.Default, (action) => addPhoto()));
+			actionSheetAlert.AddAction(UIAlertAction.Create("Add Photo", UIAlertActionStyle.Default, (action) => selectImage()));
 			actionSheetAlert.AddAction(UIAlertAction.Create("Take Picture", UIAlertActionStyle.Default, (action) => takePicture()));
 			actionSheetAlert.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, (action) => Console.WriteLine("Cancel button pressed.")));
 
