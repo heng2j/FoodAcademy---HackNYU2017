@@ -19,6 +19,50 @@ namespace FoodAcademy_HackNYU
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel caloriesLabel { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel caloriesText { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel carbsLabel { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel carbsText { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton decreaseButton { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel fatLabel { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel fatText { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton IncreaseButton { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel proteinLabel { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel proteinText { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel quantity { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIImageView SelectedPictureImageView { get; set; }
 
         void ReleaseDesignerOutlets ()
@@ -26,6 +70,61 @@ namespace FoodAcademy_HackNYU
             if (AnalysisLabel != null) {
                 AnalysisLabel.Dispose ();
                 AnalysisLabel = null;
+            }
+
+            if (caloriesLabel != null) {
+                caloriesLabel.Dispose ();
+                caloriesLabel = null;
+            }
+
+            if (caloriesText != null) {
+                caloriesText.Dispose ();
+                caloriesText = null;
+            }
+
+            if (carbsLabel != null) {
+                carbsLabel.Dispose ();
+                carbsLabel = null;
+            }
+
+            if (carbsText != null) {
+                carbsText.Dispose ();
+                carbsText = null;
+            }
+
+            if (decreaseButton != null) {
+                decreaseButton.Dispose ();
+                decreaseButton = null;
+            }
+
+            if (fatLabel != null) {
+                fatLabel.Dispose ();
+                fatLabel = null;
+            }
+
+            if (fatText != null) {
+                fatText.Dispose ();
+                fatText = null;
+            }
+
+            if (IncreaseButton != null) {
+                IncreaseButton.Dispose ();
+                IncreaseButton = null;
+            }
+
+            if (proteinLabel != null) {
+                proteinLabel.Dispose ();
+                proteinLabel = null;
+            }
+
+            if (proteinText != null) {
+                proteinText.Dispose ();
+                proteinText = null;
+            }
+
+            if (quantity != null) {
+                quantity.Dispose ();
+                quantity = null;
             }
 
             if (SelectedPictureImageView != null) {

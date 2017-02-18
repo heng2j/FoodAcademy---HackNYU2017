@@ -24,7 +24,7 @@ namespace FoodAcademy_HackNYU
 
 
 		Food food = new Food();
-
+		public int foodQuantity = 0;
 
 
 		//partial void SelectButtonClick(UIButton sender)
@@ -38,7 +38,9 @@ namespace FoodAcademy_HackNYU
 		{
 			var selectedImage = await CrossMedia.Current.PickPhotoAsync();
 			SelectedPictureImageView.Image = new UIImage(NSData.FromStream(selectedImage.GetStream()));
-			await analyseImage(selectedImage.GetStream());
+			SelectedPictureImageView.Image = MaxResizeImage(SelectedPictureImageView.Image, 250, 250);
+			await analyseImage(SelectedPictureImageView.Image.AsJPEG().AsStream());
+
 		}
 
 		async Task analyseImage(Stream imageStream)
@@ -48,8 +50,30 @@ namespace FoodAcademy_HackNYU
 				VisionServiceClient visionClient = new VisionServiceClient("c19d4b8bb6c242ea99a8a998195a24f0");
 				VisualFeature[] features = { VisualFeature.Tags, VisualFeature.Categories, VisualFeature.Description };
 				var analysisResult = await visionClient.AnalyzeImageAsync(imageStream, features.ToList(), null);
+
+				Tag[] list = analysisResult.Tags.ToArray();
+
+
+				Console.Out.WriteLine("Tags:\n");
+				foreach (Tag t in list)
+				{
+					Console.Out.WriteLine(t.Name);
+					Console.Out.WriteLine(t.Confidence);
+				}
+				Console.Out.WriteLine("Cats:\n");
+				foreach (Category c in analysisResult.Categories.ToArray())
+				{
+					Console.Out.WriteLine(c.Name);
+					Console.Out.WriteLine(c.Score);
+
+				}
 				AnalysisLabel.Text = string.Empty;
+
 				analysisResult.Description.Tags.ToList().ForEach(tag => AnalysisLabel.Text = AnalysisLabel.Text + tag + "\n");
+
+
+				//Console.Out.WriteLine(analysisResult.Categories.t);
+			
 			}
 			catch (Microsoft.ProjectOxford.Vision.ClientException ex)
 			{
@@ -81,13 +105,15 @@ namespace FoodAcademy_HackNYU
 			// Perform any additional setup after loading the view, typically from a nib.
 
 
-
+			quantity.Text = foodQuantity.ToString();
 
 
 			//takePictureView.Layer.CornerRadius = takePictureView.Frame.Size.Width / 2;
 			//takePictureView.ClipsToBounds = true;
 
 		}
+
+
 
 
 
@@ -167,13 +193,15 @@ namespace FoodAcademy_HackNYU
 			var selectedImage = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions());
 
 		
-			SelectedPictureImageView.Image = MaxResizeImage(SelectedPictureImageView.Image, 250, 250);
+
 
 			SelectedPictureImageView.Image = new UIImage(NSData.FromStream(selectedImage.GetStream()));
+			 
+
+			SelectedPictureImageView.Image = MaxResizeImage(SelectedPictureImageView.Image, 250, 250);
 
 
-
-			await analyseImage(selectedImage.GetStream());
+			await analyseImage(SelectedPictureImageView.Image.AsJPEG().AsStream());
 
 		}
 

@@ -135,6 +135,10 @@
       <DependentUpon>SecondViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Classes\Food.cs" />
+    <Compile Include="ThirdViewController.cs" />
+    <Compile Include="ThirdViewController.designer.cs">
+      <DependentUpon>ThirdViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Graphicloads-Food-Drink-Dish-2.ico" />
