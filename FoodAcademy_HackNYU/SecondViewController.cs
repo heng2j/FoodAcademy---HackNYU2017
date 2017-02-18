@@ -9,6 +9,8 @@ namespace FoodAcademy_HackNYU
 		protected SecondViewController(IntPtr handle) : base(handle)
 		{
 			// Note: this .ctor should not contain any initialization logic.
+
+			//Edited
 		}
 
 		public override void ViewDidLoad()

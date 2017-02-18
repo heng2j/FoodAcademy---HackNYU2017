@@ -9,20 +9,20 @@ using System.Threading.Tasks;
 
 using CoreGraphics;
 
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+//using System;
+//using System.Collections.Generic;
+//using System.Collections.ObjectModel;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
 
 //using Xamarin.Forms;
 
-using Plugin.Media;
-using Plugin.Media.Abstractions;
+//using Plugin.Media;
+//using Plugin.Media.Abstractions;
 
-//using Microsoft.ProjectOxford.Vision;
-//using Microsoft.ProjectOxford.Vision.Contract;
+using Microsoft.ProjectOxford.Vision;
+using Microsoft.ProjectOxford.Vision.Contract;
 using System.ComponentModel;
 using System.Diagnostics;
 
@@ -41,6 +41,11 @@ namespace FoodAcademy_HackNYU
 
 
 		Food food = new Food();
+
+		//public ObservableCollection<Food> Invoices { get; } = new ObservableCollection<Food>();
+
+		//public string Message { get; set; } = "Hello World!";
+
 
 		//Command addInvoiceCommand = null;
 		//public Command AddInvoiceCommand =>
@@ -80,7 +85,7 @@ namespace FoodAcademy_HackNYU
 		//		// 2. Add  OCR logic.
 		//		OcrResults text;
 
-		//		var client = new VisionServiceClient("ebccaf8faed7407eb5b2108193d7b13a");
+		//		var client = new VisionServiceClient("c19d4b8bb6c242ea99a8a998195a24f0");
 
 		//		using (var stream = photo.GetStream())
 		//			text = await client.RecognizeTextAsync(stream);
@@ -126,6 +131,39 @@ namespace FoodAcademy_HackNYU
 		//	}
 
 		//}
+
+
+		//public void PrintStatus(string helloWorld)
+		//{
+		//	if (helloWorld == null)
+		//		throw new ArgumentNullException(nameof(helloWorld));
+
+		//	WriteLine(helloWorld);
+		//}
+
+
+
+		//public event PropertyChangedEventHandler PropertyChanged;
+		//void OnPropertyChanged([CallerMemberName]string propertyName = "") =>
+		//	PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+
+		//bool busy;
+		//public bool IsBusy
+		//{
+		//	get { return busy; }
+		//	set
+		//	{
+		//		if (busy == value)
+		//			return;
+
+		//		busy = value;
+		//		OnPropertyChanged();
+		//		OnPropertyChanged(nameof(Message));
+		//	}
+		//}
+
+
 
 
 
@@ -176,7 +214,17 @@ namespace FoodAcademy_HackNYU
 
 
 
+		var imagePicker = new UIImagePickerController();
+			imagePicker.SourceType = UIImagePickerControllerSourceType.Camera;
+			PresentViewController(imagePicker, true, null);
+			imagePicker.Canceled += async delegate
+			{
+				await imagePicker.DismissViewControllerAsync(true);
+			};
 
+			imagePicker.FinishedPickingMedia += async (object s, UIImagePickerMediaPickedEventArgs e) {
+				//Insert code here for upload to Cognitive Services
+			};
 
 
 
