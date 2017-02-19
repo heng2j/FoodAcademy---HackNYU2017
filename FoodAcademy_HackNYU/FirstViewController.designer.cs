@@ -15,6 +15,10 @@ namespace FoodAcademy_HackNYU
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton addMoreButton { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel AnalysisLabel { get; set; }
 
         [Outlet]
@@ -47,7 +51,15 @@ namespace FoodAcademy_HackNYU
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton finishButton { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIButton IncreaseButton { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton MealTypeButton { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -65,16 +77,37 @@ namespace FoodAcademy_HackNYU
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIImageView SelectedPictureImageView { get; set; }
 
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel servingSizeText { get; set; }
+
+        [Action ("AddMoreButton_TouchUpInside:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void AddMoreButton_TouchUpInside (UIKit.UIButton sender);
+
         [Action ("DecreaseButton_TouchUpInside:")]
         [GeneratedCode ("iOS Designer", "1.0")]
         partial void DecreaseButton_TouchUpInside (UIKit.UIButton sender);
+
+        [Action ("FinishButton_TouchUpInside:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void FinishButton_TouchUpInside (UIKit.UIButton sender);
 
         [Action ("IncreaseButton_TouchUpInside:")]
         [GeneratedCode ("iOS Designer", "1.0")]
         partial void IncreaseButton_TouchUpInside (UIKit.UIButton sender);
 
+        [Action ("MealTypeButton_TouchUpInside:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void MealTypeButton_TouchUpInside (UIKit.UIButton sender);
+
         void ReleaseDesignerOutlets ()
         {
+            if (addMoreButton != null) {
+                addMoreButton.Dispose ();
+                addMoreButton = null;
+            }
+
             if (AnalysisLabel != null) {
                 AnalysisLabel.Dispose ();
                 AnalysisLabel = null;
@@ -115,9 +148,19 @@ namespace FoodAcademy_HackNYU
                 fatText = null;
             }
 
+            if (finishButton != null) {
+                finishButton.Dispose ();
+                finishButton = null;
+            }
+
             if (IncreaseButton != null) {
                 IncreaseButton.Dispose ();
                 IncreaseButton = null;
+            }
+
+            if (MealTypeButton != null) {
+                MealTypeButton.Dispose ();
+                MealTypeButton = null;
             }
 
             if (proteinLabel != null) {
@@ -138,6 +181,11 @@ namespace FoodAcademy_HackNYU
             if (SelectedPictureImageView != null) {
                 SelectedPictureImageView.Dispose ();
                 SelectedPictureImageView = null;
+            }
+
+            if (servingSizeText != null) {
+                servingSizeText.Dispose ();
+                servingSizeText = null;
             }
         }
     }

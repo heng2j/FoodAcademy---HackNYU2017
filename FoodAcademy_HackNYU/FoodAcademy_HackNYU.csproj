@@ -148,6 +148,9 @@
   <ItemGroup>
     <BundleResource Include="Resources\Graphicloads-Food-Drink-Dish-2.ico" />
     <BundleResource Include="Resources\dish-2-icon.png" />
+    <BundleResource Include="Resources\camara.png" />
+    <BundleResource Include="Resources\bad.png" />
+    <BundleResource Include="Resources\good.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

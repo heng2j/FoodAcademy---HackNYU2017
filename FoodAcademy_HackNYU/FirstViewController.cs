@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Foundation;
 using Plugin.Media;
+using System.Collections.Generic;
+
 
 using Newtonsoft.Json.Linq;
 
@@ -24,9 +26,14 @@ namespace FoodAcademy_HackNYU
 		public UIImagePickerController imagePicker = new UIImagePickerController();
 		public UIImagePickerController takeImagePicker = new UIImagePickerController();
 
+		protected UIImage defaultPic = new UIImage(); 
 
-		Food food = new Food();
-		public int foodQuantity = 0;
+
+
+		protected Food food = new Food();
+
+
+		protected LinkedList<Food> foodCollection = new LinkedList<Food>();
 
 
 		//partial void SelectButtonClick(UIButton sender)
@@ -42,6 +49,8 @@ namespace FoodAcademy_HackNYU
 			SelectedPictureImageView.Image = new UIImage(NSData.FromStream(selectedImage.GetStream()));
 			SelectedPictureImageView.Image = MaxResizeImage(SelectedPictureImageView.Image, 250, 250);
 			await analyseImage(SelectedPictureImageView.Image.AsJPEG().AsStream());
+
+			food.image = SelectedPictureImageView.Image;
 
 		}
 
@@ -123,9 +132,9 @@ namespace FoodAcademy_HackNYU
 				fatText.Text = food.fat.ToString();
 				proteinText.Text = food.protein.ToString();
 
-				foodQuantity++;
+				food.quantity++;
 
-
+				quantityLabel.Text = food.quantity.ToString();
 
 
 			
@@ -147,6 +156,7 @@ namespace FoodAcademy_HackNYU
 		{
 			base.ViewWillAppear(animated);
 
+			defaultPic = SelectedPictureImageView.Image;
 
 			//SelectedPictureImageView
 			UITapGestureRecognizer tapGesture = new UITapGestureRecognizer(actionSheet);
@@ -159,8 +169,9 @@ namespace FoodAcademy_HackNYU
 			base.ViewDidLoad();
 			// Perform any additional setup after loading the view, typically from a nib.
 
+			food.quantity = 0;
 
-			quantityLabel.Text = foodQuantity.ToString();
+			quantityLabel.Text = food.quantity.ToString();
 
 
 			//takePictureView.Layer.CornerRadius = takePictureView.Frame.Size.Width / 2;
@@ -330,7 +341,7 @@ namespace FoodAcademy_HackNYU
 			this.PresentViewController(actionSheetAlert, true, null);
 		}
 
-	
+
 
 
 	
@@ -348,9 +359,11 @@ namespace FoodAcademy_HackNYU
 				fatText.Text = (double.Parse(fatText.Text.ToString(), System.Globalization.CultureInfo.InvariantCulture) + food.fat).ToString();
 				proteinText.Text = (double.Parse(proteinText.Text.ToString(), System.Globalization.CultureInfo.InvariantCulture) + food.protein).ToString();
 
-				foodQuantity++;
+				food.quantity++;
 
-				quantityLabel.Text = foodQuantity.ToString();
+
+
+				quantityLabel.Text = food.quantity.ToString();
 			}
 
 		}
@@ -369,11 +382,76 @@ namespace FoodAcademy_HackNYU
 				fatText.Text = (double.Parse(fatText.Text.ToString(), System.Globalization.CultureInfo.InvariantCulture) - food.fat).ToString();
 				proteinText.Text = (double.Parse(proteinText.Text.ToString(), System.Globalization.CultureInfo.InvariantCulture) - food.protein).ToString();
 
-				foodQuantity--;
-				quantityLabel.Text = foodQuantity.ToString();
+				food.quantity--;
+				quantityLabel.Text = food.quantity.ToString();
 			}
 
 		}
 
+		partial void FinishButton_TouchUpInside(UIButton sender)
+		{
+			throw new NotImplementedException();
+		}
+
+
+
+
+
+
+
+		partial void AddMoreButton_TouchUpInside(UIButton sender)
+		{
+			
+
+
+
+			Food thisFood = new Food();
+
+			thisFood = food;
+
+			thisFood.calories = double.Parse(caloriesText.Text.ToString(), System.Globalization.CultureInfo.InvariantCulture);
+			thisFood.fat = double.Parse(fatText.Text.ToString(), System.Globalization.CultureInfo.InvariantCulture);
+			//thisFood = double.Parse(fiberText.Text.ToString(), System.Globalization.CultureInfo.InvariantCulture);
+			thisFood.protein = double.Parse(proteinText.Text.ToString(), System.Globalization.CultureInfo.InvariantCulture);
+
+			Console.Out.WriteLine(food.name); 
+
+			foodCollection.AddLast(thisFood);
+
+
+
+			resetFood();
+
+
+		}
+
+		async void resetFood()
+		{
+			food.name = null;
+			food.calories = 0;
+			food.fat = 0;
+			food.image = null;
+			food.protein = 0;
+			food.quantity = 0;
+
+			quantityLabel.Text = food.quantity.ToString();
+			caloriesText.Text = food.calories.ToString();
+			fatText.Text = food.fat.ToString();
+			proteinText.Text = food.protein.ToString();
+
+			SelectedPictureImageView.Image = defaultPic;
+
+		
+
+	
+
+		}
+
+
+
+		partial void MealTypeButton_TouchUpInside(UIButton sender)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
