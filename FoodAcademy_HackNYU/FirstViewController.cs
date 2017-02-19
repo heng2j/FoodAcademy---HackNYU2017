@@ -47,7 +47,7 @@ namespace FoodAcademy_HackNYU
 		{
 			var selectedImage = await CrossMedia.Current.PickPhotoAsync();
 			SelectedPictureImageView.Image = new UIImage(NSData.FromStream(selectedImage.GetStream()));
-			SelectedPictureImageView.Image = MaxResizeImage(SelectedPictureImageView.Image, 250, 250);
+			SelectedPictureImageView.Image = MaxResizeImage(SelectedPictureImageView.Image, 1024, 768);
 			await analyseImage(SelectedPictureImageView.Image.AsJPEG().AsStream());
 
 			food.image = SelectedPictureImageView.Image;
@@ -87,7 +87,7 @@ namespace FoodAcademy_HackNYU
 				// .ForEach(tag => AnalysisLabel.Text = AnalysisLabel.Text + tag + "\n");
 				string foodName = analysisResult.Description.Tags.ToList()[0];
 
-		
+
 
 				//getFood getfood = new getFood();
 
@@ -95,41 +95,50 @@ namespace FoodAcademy_HackNYU
 
 
 				//string json = @"
-    //    {
-    //        food: [
-          
-    //            {
-    //                name: ""fries"",
-    //                fat: 15.5;,
-    //                fiber: 0.5,
-    //                protein: 4.3,
-    //                calories: 298
-    //            }
-    //        ]
-    //    }";
+				//    {
+				//        food: [
+
+				//            {
+				//                name: ""fries"",
+				//                fat: 15.5;,
+				//                fiber: 0.5,
+				//                protein: 4.3,
+				//                calories: 298
+				//            }
+				//        ]
+				//    }";
 
 
+				string json = nutritionixController.getNutritionFacts(foodName);
 
-				//string matchIdToFind = "fries";
-				//JObject jo = JObject.Parse(json);
+				Console.Out.WriteLine(json);
 
-				//JObject match = jo["food"].Values<JObject>()
-				//	.Where(m => m["name"].Value<string>() == matchIdToFind)
-				//	.FirstOrDefault();
 
-				//food.name = match.GetValue("name").ToString();
-				//food.calories = double.Parse(match.GetValue("calories").ToString(), System.Globalization.CultureInfo.InvariantCulture);
-				//food.protein = double.Parse(match.GetValue("protein").ToString(), System.Globalization.CultureInfo.InvariantCulture);
-				//food.fat = double.Parse(match.GetValue("fat").ToString(), System.Globalization.CultureInfo.InvariantCulture);
+				string matchIdToFind = foodName;
+				JObject jo = JObject.Parse(json);
 
+				JObject match = jo["foods"].Values<JObject>()
+					.Where(m => m["food_name"].Value<string>() == matchIdToFind)
+					.FirstOrDefault();
 
 
 
 
+				food.name = match.GetValue("food_name").ToString();
+				food.calories = double.Parse(match.GetValue("nf_calories").ToString(), System.Globalization.CultureInfo.InvariantCulture);
+				food.protein = double.Parse(match.GetValue("nf_protein").ToString(), System.Globalization.CultureInfo.InvariantCulture);
+				food.carbs = double.Parse(match.GetValue("nf_total_fat").ToString(), System.Globalization.CultureInfo.InvariantCulture);
+				food.fat = double.Parse(match.GetValue("nf_total_carbohydrate").ToString(), System.Globalization.CultureInfo.InvariantCulture);
 
-				food = getFood.chooseFood(foodName);
+
+
+
+
+
+				//food = getFood.chooseFood(foodName);
 				caloriesText.Text = food.calories.ToString();
 				fatText.Text = food.fat.ToString();
+				carbsText.Text = food.carbs.ToString();
 				proteinText.Text = food.protein.ToString();
 
 				food.quantity++;
@@ -226,7 +235,7 @@ namespace FoodAcademy_HackNYU
 					Console.WriteLine("got the original image");
 
 					//profileView.Image = null;
-					food.image = MaxResizeImage(originalImage, 200, 200); // display
+					food.image = MaxResizeImage(originalImage, 1024, 768); // display
 
 
 
@@ -267,7 +276,7 @@ namespace FoodAcademy_HackNYU
 			SelectedPictureImageView.Image = new UIImage(NSData.FromStream(selectedImage.GetStream()));
 			 
 
-			SelectedPictureImageView.Image = MaxResizeImage(SelectedPictureImageView.Image, 250, 250);
+			SelectedPictureImageView.Image = MaxResizeImage(SelectedPictureImageView.Image, 1024, 768);
 
 
 			await analyseImage(SelectedPictureImageView.Image.AsJPEG().AsStream());
@@ -287,7 +296,7 @@ namespace FoodAcademy_HackNYU
 
 
 
-				food.image = MaxResizeImage(originalImage, 200, 200); // display
+				food.image = MaxResizeImage(originalImage, 1024, 768); // display
 			}
 			takeImagePicker.DismissModalViewController(true);
 		}
@@ -358,6 +367,8 @@ namespace FoodAcademy_HackNYU
 				caloriesText.Text = (double.Parse(caloriesText.Text.ToString(), System.Globalization.CultureInfo.InvariantCulture) + food.calories).ToString();
 				fatText.Text = (double.Parse(fatText.Text.ToString(), System.Globalization.CultureInfo.InvariantCulture) + food.fat).ToString();
 				proteinText.Text = (double.Parse(proteinText.Text.ToString(), System.Globalization.CultureInfo.InvariantCulture) + food.protein).ToString();
+				carbsText.Text = (double.Parse(carbsText.Text.ToString(), System.Globalization.CultureInfo.InvariantCulture) + food.carbs).ToString();
+			
 
 				food.quantity++;
 
@@ -381,6 +392,8 @@ namespace FoodAcademy_HackNYU
 				caloriesText.Text = (double.Parse(caloriesText.Text.ToString(), System.Globalization.CultureInfo.InvariantCulture) - food.calories).ToString();
 				fatText.Text = (double.Parse(fatText.Text.ToString(), System.Globalization.CultureInfo.InvariantCulture) - food.fat).ToString();
 				proteinText.Text = (double.Parse(proteinText.Text.ToString(), System.Globalization.CultureInfo.InvariantCulture) - food.protein).ToString();
+				carbsText.Text = (double.Parse(carbsText.Text.ToString(), System.Globalization.CultureInfo.InvariantCulture) - food.carbs).ToString();
+
 
 				food.quantity--;
 				quantityLabel.Text = food.quantity.ToString();
@@ -390,7 +403,7 @@ namespace FoodAcademy_HackNYU
 
 		partial void FinishButton_TouchUpInside(UIButton sender)
 		{
-			throw new NotImplementedException();
+			
 		}
 
 
@@ -433,11 +446,14 @@ namespace FoodAcademy_HackNYU
 			food.image = null;
 			food.protein = 0;
 			food.quantity = 0;
+			food.carbs = 0;
 
 			quantityLabel.Text = food.quantity.ToString();
 			caloriesText.Text = food.calories.ToString();
 			fatText.Text = food.fat.ToString();
 			proteinText.Text = food.protein.ToString();
+			carbsText.Text = food.carbs.ToString();
+
 
 			SelectedPictureImageView.Image = defaultPic;
 

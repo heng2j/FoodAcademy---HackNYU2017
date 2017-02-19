@@ -144,13 +144,20 @@
     <Compile Include="Classes\getAbsoluteNumForAFood.cs" />
     <Compile Include="Classes\getFood.cs" />
     <Compile Include="Classes\people.cs" />
+    <Compile Include="Classes\nutritionixController.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Graphicloads-Food-Drink-Dish-2.ico" />
     <BundleResource Include="Resources\dish-2-icon.png" />
-    <BundleResource Include="Resources\camara.png" />
     <BundleResource Include="Resources\bad.png" />
     <BundleResource Include="Resources\good.png" />
+    <BundleResource Include="Resources\mealsummary.png" />
+    <BundleResource Include="Resources\mealalt.png" />
+    <BundleResource Include="Resources\report.png" />
+    <BundleResource Include="Resources\camara %281%29.png" />
+    <BundleResource Include="Resources\social %281%29.png" />
+    <BundleResource Include="Resources\stats.png" />
+    <BundleResource Include="Resources\addfriends.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

@@ -48,6 +48,7 @@ namespace FoodAcademy_HackNYU
 				food.fiber = 2.6;
 				food.protein = 1.09;
 				food.calories = 89;
+				food.servingMeasure = "";
 			}
 			if (name == "fries")
 			{
