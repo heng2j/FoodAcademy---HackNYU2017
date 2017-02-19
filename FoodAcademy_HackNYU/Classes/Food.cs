@@ -7,10 +7,10 @@ namespace FoodAcademy_HackNYU
 	{
 
 		public string name { get; set; }
-		public int calories { get; set; }
-		public int fat { get; set; }
-		public int protein { get; set; }
-		public int fiber { get; set; }
+		public double calories { get; set; }
+		public double fat { get; set; }
+		public double protein { get; set; }
+		public double fiber { get; set; }
 		public UIImage image { get; set; }
 
 	}

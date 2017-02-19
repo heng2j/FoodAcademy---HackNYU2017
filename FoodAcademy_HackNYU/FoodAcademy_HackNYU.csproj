@@ -139,6 +139,11 @@
     <Compile Include="ThirdViewController.designer.cs">
       <DependentUpon>ThirdViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Classes\aMeal.cs" />
+    <Compile Include="Classes\analyzeAMeal.cs" />
+    <Compile Include="Classes\getAbsoluteNumForAFood.cs" />
+    <Compile Include="Classes\getFood.cs" />
+    <Compile Include="Classes\people.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Graphicloads-Food-Drink-Dish-2.ico" />

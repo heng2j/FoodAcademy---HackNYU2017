@@ -59,11 +59,19 @@ namespace FoodAcademy_HackNYU
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UILabel quantity { get; set; }
+        UIKit.UILabel quantityLabel { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIImageView SelectedPictureImageView { get; set; }
+
+        [Action ("DecreaseButton_TouchUpInside:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void DecreaseButton_TouchUpInside (UIKit.UIButton sender);
+
+        [Action ("IncreaseButton_TouchUpInside:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void IncreaseButton_TouchUpInside (UIKit.UIButton sender);
 
         void ReleaseDesignerOutlets ()
         {
@@ -122,9 +130,9 @@ namespace FoodAcademy_HackNYU
                 proteinText = null;
             }
 
-            if (quantity != null) {
-                quantity.Dispose ();
-                quantity = null;
+            if (quantityLabel != null) {
+                quantityLabel.Dispose ();
+                quantityLabel = null;
             }
 
             if (SelectedPictureImageView != null) {

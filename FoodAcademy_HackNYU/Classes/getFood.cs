@@ -3,13 +3,17 @@ namespace FoodAcademy_HackNYU
 {
 	public class getFood
 	{
-		public Food food;
-		public getFood()
+
+	
+
+
+		public static Food chooseFood(string name)
 		{
-			food = null;
-		}
-		public Food chooseFood(string name)
-		{
+
+
+			Food food = new Food();
+
+
 			if (name == "Strawberry") {
 				food.name = "Strawberrry";
 				food.fat = 0.3;
@@ -73,10 +77,7 @@ namespace FoodAcademy_HackNYU
 				food.calories = 41;
 			}
 
-			else {
-				
-				return null;
-			}
+
 			return food;
 		}
 	}

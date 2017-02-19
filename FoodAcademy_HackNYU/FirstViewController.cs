@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Foundation;
 using Plugin.Media;
 
+using Newtonsoft.Json.Linq;
+
 
 using Microsoft.ProjectOxford.Vision;
 using Microsoft.ProjectOxford.Vision.Contract;
@@ -72,7 +74,60 @@ namespace FoodAcademy_HackNYU
 				analysisResult.Description.Tags.ToList().ForEach(tag => AnalysisLabel.Text = AnalysisLabel.Text + tag + "\n");
 
 
-				//Console.Out.WriteLine(analysisResult.Categories.t);
+
+				// .ForEach(tag => AnalysisLabel.Text = AnalysisLabel.Text + tag + "\n");
+				string foodName = analysisResult.Description.Tags.ToList()[0];
+
+		
+
+				//getFood getfood = new getFood();
+
+
+
+
+				//string json = @"
+    //    {
+    //        food: [
+          
+    //            {
+    //                name: ""fries"",
+    //                fat: 15.5;,
+    //                fiber: 0.5,
+    //                protein: 4.3,
+    //                calories: 298
+    //            }
+    //        ]
+    //    }";
+
+
+
+				//string matchIdToFind = "fries";
+				//JObject jo = JObject.Parse(json);
+
+				//JObject match = jo["food"].Values<JObject>()
+				//	.Where(m => m["name"].Value<string>() == matchIdToFind)
+				//	.FirstOrDefault();
+
+				//food.name = match.GetValue("name").ToString();
+				//food.calories = double.Parse(match.GetValue("calories").ToString(), System.Globalization.CultureInfo.InvariantCulture);
+				//food.protein = double.Parse(match.GetValue("protein").ToString(), System.Globalization.CultureInfo.InvariantCulture);
+				//food.fat = double.Parse(match.GetValue("fat").ToString(), System.Globalization.CultureInfo.InvariantCulture);
+
+
+
+
+
+
+				food = getFood.chooseFood(foodName);
+				caloriesText.Text = food.calories.ToString();
+				fatText.Text = food.fat.ToString();
+				proteinText.Text = food.protein.ToString();
+
+				foodQuantity++;
+
+
+
+
 			
 			}
 			catch (Microsoft.ProjectOxford.Vision.ClientException ex)
@@ -105,7 +160,7 @@ namespace FoodAcademy_HackNYU
 			// Perform any additional setup after loading the view, typically from a nib.
 
 
-			quantity.Text = foodQuantity.ToString();
+			quantityLabel.Text = foodQuantity.ToString();
 
 
 			//takePictureView.Layer.CornerRadius = takePictureView.Frame.Size.Width / 2;
@@ -184,7 +239,10 @@ namespace FoodAcademy_HackNYU
 		{
 
 			imagePicker.DismissModalViewController(true);
+
 		}
+
+
 
 		async void takePicture()
 		{
@@ -271,5 +329,51 @@ namespace FoodAcademy_HackNYU
 
 			this.PresentViewController(actionSheetAlert, true, null);
 		}
+
+	
+
+
+	
+
+		partial void IncreaseButton_TouchUpInside(UIButton sender)
+		{
+			increaseQuant();
+		}
+
+		async void increaseQuant()
+		{
+			if (food.name != null)
+			{
+				caloriesText.Text = (double.Parse(caloriesText.Text.ToString(), System.Globalization.CultureInfo.InvariantCulture) + food.calories).ToString();
+				fatText.Text = (double.Parse(fatText.Text.ToString(), System.Globalization.CultureInfo.InvariantCulture) + food.fat).ToString();
+				proteinText.Text = (double.Parse(proteinText.Text.ToString(), System.Globalization.CultureInfo.InvariantCulture) + food.protein).ToString();
+
+				foodQuantity++;
+
+				quantityLabel.Text = foodQuantity.ToString();
+			}
+
+		}
+
+		partial void DecreaseButton_TouchUpInside(UIButton sender)
+		{
+			decreaseQuant();
+		}
+
+		async void decreaseQuant()
+		{
+
+			if (food.name != null && int.Parse(quantityLabel.Text.ToString()) > 1 )
+			{
+				caloriesText.Text = (double.Parse(caloriesText.Text.ToString(), System.Globalization.CultureInfo.InvariantCulture) - food.calories).ToString();
+				fatText.Text = (double.Parse(fatText.Text.ToString(), System.Globalization.CultureInfo.InvariantCulture) - food.fat).ToString();
+				proteinText.Text = (double.Parse(proteinText.Text.ToString(), System.Globalization.CultureInfo.InvariantCulture) - food.protein).ToString();
+
+				foodQuantity--;
+				quantityLabel.Text = foodQuantity.ToString();
+			}
+
+		}
+
 	}
 }
